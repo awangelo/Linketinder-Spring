@@ -1,0 +1,78 @@
+services:
+  db-nucleo:
+    image: postgres:16-alpine
+    container_name: linketinder_db_nucleo
+    restart: no
+    environment:
+      POSTGRES_DB: ${DB_NUCLEO_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_nucleo:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${DB_NUCLEO_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  db-competencia:
+    image: postgres:16-alpine
+    container_name: linketinder_db_competencia
+    restart: no
+    environment:
+      POSTGRES_DB: ${DB_COMPETENCIA_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_competencia:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${DB_COMPETENCIA_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ms-nucleo:
+    build:
+      context: ./ms-nucleo
+      dockerfile: Dockerfile
+    container_name: linketinder_ms_nucleo
+    ports:
+      - "8080:8080"
+    depends_on:
+      db-nucleo:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-nucleo:5432/${DB_NUCLEO_NAME}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - MS_COMPETENCIA_URL=http://ms-competencia:8081
+    volumes:
+      - ./ms-nucleo:/app
+      - gradle_cache:/root/.gradle
+
+  ms-competencia:
+    build:
+      context: ./ms-competencia
+      dockerfile: Dockerfile
+    container_name: linketinder_ms_competencia
+    ports:
+      - "8081:8081"
+    depends_on:
+      db-competencia:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-competencia:5432/${DB_COMPETENCIA_NAME}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./ms-competencia:/app
+      - gradle_cache:/root/.gradle
+
+volumes:
+  pgdata_nucleo:
+  pgdata_competencia:
+  gradle_cache:
