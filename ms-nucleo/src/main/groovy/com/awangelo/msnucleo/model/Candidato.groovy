@@ -1,6 +1,8 @@
 package com.awangelo.msnucleo.model
 
 import jakarta.persistence.*
+import org.hibernate.Length
+
 import java.time.LocalDate
 
 @Entity
