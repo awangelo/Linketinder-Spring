@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/candidato")
+@RequestMapping("/api/candidatos")
 @CrossOrigin(origins = "*")
 class CandidatoController {
 
@@ -26,9 +26,7 @@ class CandidatoController {
     @PostMapping
     ResponseEntity<CandidatoResponseDTO> cadastrarCandidato(@Valid @RequestBody CandidatoRequestDTO requestDTO) {
         // @Valid roda o Bean Validation ANTES de entrar no metodo.
-
         CandidatoResponseDTO responseDTO = candidatoService.salvar(requestDTO)
-
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO)
     }
 
