@@ -1,6 +1,7 @@
 package com.awangelo.mscompetencia.controller
 
 import com.awangelo.mscompetencia.dto.CompetenciaRequestDTO
+import com.awangelo.mscompetencia.dto.VagaCompetenciaRequestDTO
 import com.awangelo.mscompetencia.service.CompetenciaService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/competencia")
+@RequestMapping("/api/competencias")
 @CrossOrigin(origins = "*")
 class CompetenciaController {
 
@@ -23,7 +24,7 @@ class CompetenciaController {
         this.competenciaService = competenciaService
     }
 
-    @PostMapping("/candidato/{candidatoId}")
+    @PostMapping("/candidatos/{candidatoId}")
     ResponseEntity<Void> adicionarCompetenciasCandidato(
             @PathVariable Long candidatoId,
             @RequestBody @Valid List<CompetenciaRequestDTO> competencias) {
@@ -31,6 +32,15 @@ class CompetenciaController {
         competenciaService.salvarCompetenciasDoCandidato(candidatoId, competencias)
 
         return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @PostMapping("/vagas")
+    ResponseEntity<Void> adicionarCompetenciasVaga(
+            @RequestBody @Valid VagaCompetenciaRequestDTO dto) {
+
+        competenciaService.salvarCompetenciasDaVaga(dto.vagaId, dto.competencias)
+
+        return ResponseEntity.ok().build()
     }
 
 }
