@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-@FeignClient(name = "ms-competencia", url = "http://localhost:8081")
+@FeignClient(name = "ms-competencia", url = "${ms.competencia.url}")
 interface MsCompetenciaClient {
 
     @PostMapping("/api/competencias/vagas")
