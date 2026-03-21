@@ -31,13 +31,13 @@ class CurtidaController {
     }
 
     @GetMapping("/matches/candidatos/{candidatoId}")
-    ResponseEntity<List<VagaResponseDTO>> listarMatchesCandidato(@PathVariable Long candidatoId) {
+    ResponseEntity<List<VagaResponseDTO>> listarMatchesCandidato(@PathVariable("candidatoId") Long candidatoId) {
         List<VagaResponseDTO> matches = curtidaService.listarMatchesCandidato(candidatoId)
         return ResponseEntity.ok(matches)
     }
 
     @GetMapping("/matches/vagas/{vagaId}")
-    ResponseEntity<List<CandidatoResponseDTO>> listarMatchesVaga(@PathVariable Long vagaId) {
+    ResponseEntity<List<CandidatoResponseDTO>> listarMatchesVaga(@PathVariable("vagaId") Long vagaId) {
         List<CandidatoResponseDTO> matches = curtidaService.listarMatchesVaga(vagaId)
         return ResponseEntity.ok(matches)
     }

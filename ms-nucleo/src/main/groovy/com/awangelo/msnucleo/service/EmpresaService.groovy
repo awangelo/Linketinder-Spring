@@ -32,8 +32,7 @@ class EmpresaService {
                 estado: dto.estado
         )
 
-        return empresaRepository.save(empresa)
+        Empresa salvo = empresaRepository.save(empresa)
+        return salvo
     }
-
 }
-

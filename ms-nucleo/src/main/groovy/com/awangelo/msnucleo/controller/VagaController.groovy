@@ -28,7 +28,7 @@ class VagaController {
     }
 
     @PostMapping("/{id}/competencias")
-    ResponseEntity<Void> adicionarCompetencias(@PathVariable Long id, @RequestBody List<CompetenciaDTO> competencias) {
+    ResponseEntity<Void> adicionarCompetencias(@PathVariable("id") Long id, @RequestBody List<CompetenciaDTO> competencias) {
         vagaService.adicionarCompetencias(id, competencias)
         return ResponseEntity.ok().build()
     }
