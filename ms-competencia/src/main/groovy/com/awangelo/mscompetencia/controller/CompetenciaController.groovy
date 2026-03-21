@@ -27,7 +27,7 @@ class CompetenciaController {
 
     @PostMapping("/candidatos/{candidatoId}")
     ResponseEntity<Void> adicionarCompetenciasCandidato(
-            @PathVariable Long candidatoId,
+            @PathVariable("candidatoId") Long candidatoId,
             @RequestBody @Valid List<CompetenciaRequestDTO> competencias) {
 
         competenciaService.salvarCompetenciasDoCandidato(candidatoId, competencias)
@@ -46,7 +46,7 @@ class CompetenciaController {
 
     @GetMapping("/candidatos/{candidatoId}")
     ResponseEntity<List<CompetenciaRequestDTO>> listarCompetenciasCandidato(
-            @PathVariable Long candidatoId) {
+            @PathVariable("candidatoId") Long candidatoId) {
 
         List<CompetenciaRequestDTO> lista = competenciaService.listarCompetenciasDoCandidato(candidatoId)
 
@@ -55,11 +55,10 @@ class CompetenciaController {
 
     @GetMapping("/vagas/{vagaId}")
     ResponseEntity<List<CompetenciaRequestDTO>> listarCompetenciasVaga(
-            @PathVariable Long vagaId) {
+            @PathVariable("vagaId") Long vagaId) {
 
         List<CompetenciaRequestDTO> lista = competenciaService.listarCompetenciasDaVaga(vagaId)
 
         return ResponseEntity.ok(lista)
     }
-
 }
