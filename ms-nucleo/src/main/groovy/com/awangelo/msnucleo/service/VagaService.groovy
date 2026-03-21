@@ -1,6 +1,7 @@
 package com.awangelo.msnucleo.service
 
 import com.awangelo.msnucleo.client.MsCompetenciaClient
+import com.awangelo.msnucleo.dto.CompetenciaDTO
 import com.awangelo.msnucleo.dto.VagaCompetenciaDTO
 import com.awangelo.msnucleo.dto.VagaRequestDTO
 import com.awangelo.msnucleo.model.Empresa
@@ -24,7 +25,7 @@ class VagaService {
     }
 
     @Transactional
-    void adicionarCompetencias(Long vagaId, List<String> competencias) {
+    void adicionarCompetencias(Long vagaId, List<CompetenciaDTO> competencias) {
         VagaCompetenciaDTO competenciaDTO = new VagaCompetenciaDTO(
                 vagaId: vagaId,
                 competencias: competencias
@@ -47,11 +48,7 @@ class VagaService {
         )
         Vaga vagaSalva = vagaRepository.save(vaga)
 
-        try {
-            adicionarCompetencias(vagaSalva.id, dto.competencias)
-        } catch (Exception e) { // ms-competencia pode estar off
-            System.err.println("Erro ao comunicar com ms-competencia: " + e.getMessage())
-        }
+        adicionarCompetencias(vagaSalva.id, dto.competencias)
 
         return vagaSalva
     }

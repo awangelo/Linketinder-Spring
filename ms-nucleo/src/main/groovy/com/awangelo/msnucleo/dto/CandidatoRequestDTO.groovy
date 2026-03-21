@@ -26,18 +26,10 @@ class CandidatoRequestDTO {
     @NotBlank(message = "O país é obrigatório")
     String pais
 
-    String estado
-
-    @NotBlank(message = "O CEP é obrigatório")
-    String cep
-
     String descricao
 
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     String senha
-
-    String telefone
-    String linkedin
 
 }

@@ -30,11 +30,7 @@ class CandidatoService {
                 email: dto.email,
                 cpf: dto.cpf,
                 pais: dto.pais,
-                estado: dto.estado,
-                cep: dto.cep,
                 descricao: dto.descricao,
-                telefone: dto.telefone,
-                linkedin: dto.linkedin,
                 senha: senha
         )
 
