@@ -72,8 +72,8 @@ class CurtidaService {
             List<CompetenciaDTO> competencias = []
             try {
                 competencias = msCompetenciaClient.getCompetenciasVaga(vaga.id)
-            } catch (Exception e) {
-                // Ignore error fetching competencies
+            } catch (Exception ignored) {
+                // ms ta off
             }
             return new VagaResponseDTO(vaga, competencias)
         }
@@ -82,13 +82,22 @@ class CurtidaService {
     @Transactional(readOnly = true)
     List<CandidatoResponseDTO> listarMatchesVaga(Long vagaId) {
         List<Candidato> candidatos = curtidaRepository.findMatchesForVaga(vagaId)
+        return montarResponseCandidatos(candidatos)
+    }
 
+    @Transactional(readOnly = true)
+    List<CandidatoResponseDTO> listarInteressadosVaga(Long vagaId) {
+        List<Candidato> candidatos = curtidaRepository.findCandidatosInteressadosVaga(vagaId)
+        return montarResponseCandidatos(candidatos)
+    }
+
+    private List<CandidatoResponseDTO> montarResponseCandidatos(List<Candidato> candidatos) {
         return candidatos.collect { candidato ->
-            List<CompetenciaDTO> competencias = []
+            List<CompetenciaDTO> competencias = [] as List<CompetenciaDTO>
             try {
                 competencias = msCompetenciaClient.getCompetenciasCandidato(candidato.id)
-            } catch (Exception e) {
-                // Ignore error fetching competencies
+            } catch (Exception ignored) {
+                // ms ta off
             }
             return new CandidatoResponseDTO(candidato, competencias)
         }

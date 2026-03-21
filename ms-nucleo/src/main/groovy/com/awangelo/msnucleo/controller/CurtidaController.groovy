@@ -42,4 +42,10 @@ class CurtidaController {
         return ResponseEntity.ok(matches)
     }
 
+    @GetMapping("/interessados/vagas/{vagaId}")
+    ResponseEntity<List<CandidatoResponseDTO>> listarInteressadosVaga(@PathVariable("vagaId") Long vagaId) {
+        List<CandidatoResponseDTO> interessados = curtidaService.listarInteressadosVaga(vagaId)
+        return ResponseEntity.ok(interessados)
+    }
+
 }

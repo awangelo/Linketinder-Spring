@@ -43,4 +43,17 @@ interface CurtidaRepository extends JpaRepository<Curtida, Long> {
     """)
     List<Candidato> findMatchesForVaga(@Param("vagaId") Long vagaId)
 
+    @Query("""
+        SELECT c.candidato FROM Curtida c 
+        WHERE c.vaga.id = :vagaId 
+        AND c.origemCurtida = 'CANDIDATO'
+        AND NOT EXISTS (
+            SELECT 1 FROM Curtida c2 
+            WHERE c2.vaga.id = c.vaga.id 
+            AND c2.candidato.id = c.candidato.id 
+            AND c2.origemCurtida = 'EMPRESA'
+        )
+    """)
+    List<Candidato> findCandidatosInteressadosVaga(@Param("vagaId") Long vagaId)
+
 }
