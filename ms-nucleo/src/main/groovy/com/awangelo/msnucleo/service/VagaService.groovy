@@ -4,6 +4,7 @@ import com.awangelo.msnucleo.client.MsCompetenciaClient
 import com.awangelo.msnucleo.dto.CompetenciaDTO
 import com.awangelo.msnucleo.dto.VagaCompetenciaDTO
 import com.awangelo.msnucleo.dto.VagaRequestDTO
+import com.awangelo.msnucleo.dto.VagaResponseDTO
 import com.awangelo.msnucleo.model.Empresa
 import com.awangelo.msnucleo.model.Vaga
 import com.awangelo.msnucleo.repository.EmpresaRepository
@@ -51,6 +52,23 @@ class VagaService {
         adicionarCompetencias(vagaSalva.id, dto.competencias)
 
         return vagaSalva
+    }
+
+    @Transactional(readOnly = true)
+    List<VagaResponseDTO> listarVagas() {
+        List<Vaga> vagas = vagaRepository.findAll()
+
+        return vagas.collect { vaga ->
+            List<CompetenciaDTO> competencias = [] as List<CompetenciaDTO>
+            try {
+                competencias = msCompetenciaClient.getCompetenciasVaga(vaga.id)
+            } catch (Exception e) {
+                // ms-competencia esta off, o que nao iria acontecer com microservicos ou uma fila.
+                println "Erro ao buscar competências para vaga ${vaga.id}: ${e.message}"
+            }
+
+            return new VagaResponseDTO(vaga, competencias)
+        }
     }
 
 }

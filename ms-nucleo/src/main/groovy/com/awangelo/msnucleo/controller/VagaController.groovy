@@ -2,6 +2,7 @@ package com.awangelo.msnucleo.controller
 
 import com.awangelo.msnucleo.dto.CompetenciaDTO
 import com.awangelo.msnucleo.dto.VagaRequestDTO
+import com.awangelo.msnucleo.dto.VagaResponseDTO
 import com.awangelo.msnucleo.model.Vaga
 import com.awangelo.msnucleo.service.VagaService
 import jakarta.validation.Valid
@@ -30,6 +31,12 @@ class VagaController {
     ResponseEntity<Void> adicionarCompetencias(@PathVariable Long id, @RequestBody List<CompetenciaDTO> competencias) {
         vagaService.adicionarCompetencias(id, competencias)
         return ResponseEntity.ok().build()
+    }
+
+    @GetMapping
+    ResponseEntity<List<VagaResponseDTO>> listarVagas() {
+        List<VagaResponseDTO> vagas = vagaService.listarVagas()
+        return ResponseEntity.ok(vagas)
     }
 
 }

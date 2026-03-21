@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -41,6 +42,24 @@ class CompetenciaController {
         competenciaService.salvarCompetenciasDaVaga(dto.vagaId, dto.competencias)
 
         return ResponseEntity.ok().build()
+    }
+
+    @GetMapping("/candidatos/{candidatoId}")
+    ResponseEntity<List<CompetenciaRequestDTO>> listarCompetenciasCandidato(
+            @PathVariable Long candidatoId) {
+
+        List<CompetenciaRequestDTO> lista = competenciaService.listarCompetenciasDoCandidato(candidatoId)
+
+        return ResponseEntity.ok(lista)
+    }
+
+    @GetMapping("/vagas/{vagaId}")
+    ResponseEntity<List<CompetenciaRequestDTO>> listarCompetenciasVaga(
+            @PathVariable Long vagaId) {
+
+        List<CompetenciaRequestDTO> lista = competenciaService.listarCompetenciasDaVaga(vagaId)
+
+        return ResponseEntity.ok(lista)
     }
 
 }

@@ -69,4 +69,28 @@ class CompetenciaService {
         }
     }
 
+    @Transactional(readOnly = true)
+    List<CompetenciaRequestDTO> listarCompetenciasDoCandidato(Long candidatoId) {
+        List<CandidatoCompetencia> lista = candidatoCompetenciaRepository.findByCandidatoId(candidatoId)
+
+        return lista.collect { cc ->
+            new CompetenciaRequestDTO(
+                    nome: cc.competencia.nome,
+                    nivel: cc.nivel
+            )
+        }
+    }
+
+    @Transactional(readOnly = true)
+    List<CompetenciaRequestDTO> listarCompetenciasDaVaga(Long vagaId) {
+        List<VagaCompetencia> lista = vagaCompetenciaRepository.findByVagaId(vagaId)
+
+        return lista.collect { vc ->
+            new CompetenciaRequestDTO(
+                    nome: vc.competencia.nome,
+                    nivel: vc.nivel
+            )
+        }
+    }
+
 }

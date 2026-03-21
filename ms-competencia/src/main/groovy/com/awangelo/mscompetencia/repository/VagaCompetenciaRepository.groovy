@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface VagaCompetenciaRepository extends JpaRepository<VagaCompetencia, Long> {
-}
 
+    List<VagaCompetencia> findByVagaId(Long vagaId)
+
+}
