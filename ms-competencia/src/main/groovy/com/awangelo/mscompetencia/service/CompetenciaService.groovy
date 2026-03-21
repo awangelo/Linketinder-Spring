@@ -48,10 +48,10 @@ class CompetenciaService {
     }
 
     @Transactional
-    void salvarCompetenciasDaVaga(Long vagaId, List<String> competenciasSugeridas) {
+    void salvarCompetenciasDaVaga(Long vagaId, List<CompetenciaRequestDTO> competenciasSugeridas) {
 
-        for (String nome : competenciasSugeridas) {
-            String nomeLimpo = nome.trim()
+        for (CompetenciaRequestDTO dto : competenciasSugeridas) {
+            String nomeLimpo = dto.nome.trim()
 
             Competencia competencia = competenciaRepository.findByNomeIgnoreCase(nomeLimpo)
                     .orElseGet({
@@ -61,7 +61,8 @@ class CompetenciaService {
 
             VagaCompetencia vinculo = new VagaCompetencia(
                     vagaId: vagaId,
-                    competencia: competencia
+                    competencia: competencia,
+                    nivel: dto.nivel
             )
 
             vagaCompetenciaRepository.save(vinculo)

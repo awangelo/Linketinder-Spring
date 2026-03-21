@@ -9,7 +9,6 @@ class VagaCompetenciaRequestDTO {
     Long vagaId
 
     @NotEmpty(message = "A lista de competências não pode ser vazia")
-    List<String> competencias
+    List<CompetenciaRequestDTO> competencias
 
 }
-

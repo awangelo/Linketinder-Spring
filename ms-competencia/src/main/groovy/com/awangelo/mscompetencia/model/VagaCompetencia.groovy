@@ -15,4 +15,8 @@ class VagaCompetencia {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "competencia_id", nullable = false)
     Competencia competencia
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    NivelCompetenciaEnum nivel
 }
