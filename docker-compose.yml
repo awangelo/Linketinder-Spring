@@ -52,7 +52,7 @@ services:
       - MS_COMPETENCIA_URL=http://ms-competencia:8081
     volumes:
       - ./ms-nucleo:/app
-      - gradle_cache:/root/.gradle
+      - gradle_cache_nucleo:/root/.gradle
 
   ms-competencia:
     build:
@@ -70,9 +70,10 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - ./ms-competencia:/app
-      - gradle_cache:/root/.gradle
+      - gradle_cache_competencia:/root/.gradle
 
 volumes:
   pgdata_nucleo:
   pgdata_competencia:
-  gradle_cache:
+  gradle_cache_nucleo:
+  gradle_cache_competencia:
