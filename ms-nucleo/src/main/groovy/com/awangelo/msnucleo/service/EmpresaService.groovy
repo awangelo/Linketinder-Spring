@@ -29,8 +29,7 @@ class EmpresaService {
                 senha: senha,
                 descricao: dto.descricao,
                 pais: dto.pais,
-                estado: dto.estado,
-                cep: dto.cep
+                estado: dto.estado
         )
 
         return empresaRepository.save(empresa)

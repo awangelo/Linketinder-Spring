@@ -24,6 +24,5 @@ class EmpresaRequestDTO {
     String descricao
     String pais
     String estado
-    String cep
 
 }

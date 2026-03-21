@@ -27,9 +27,6 @@ class Empresa {
     @Column(length = 2)
     String estado
 
-    @Column(nullable = false, length = 9)
-    String cep
-
     @Column(nullable = false)
     String senha
 }
