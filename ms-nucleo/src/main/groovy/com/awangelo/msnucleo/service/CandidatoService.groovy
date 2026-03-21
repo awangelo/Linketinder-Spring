@@ -1,7 +1,9 @@
 package com.awangelo.msnucleo.service
 
+import com.awangelo.msnucleo.client.MsCompetenciaClient
 import com.awangelo.msnucleo.dto.CandidatoRequestDTO
 import com.awangelo.msnucleo.dto.CandidatoResponseDTO
+import com.awangelo.msnucleo.dto.CompetenciaDTO
 import com.awangelo.msnucleo.model.Candidato
 import com.awangelo.msnucleo.repository.CandidatoRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -13,10 +15,13 @@ class CandidatoService {
 
     private final CandidatoRepository candidatoRepository
     private final PasswordEncoder passwordEncoder
+    private final MsCompetenciaClient msCompetenciaClient
 
-    CandidatoService(CandidatoRepository candidatoRepository, PasswordEncoder passwordEncoder) {
+    CandidatoService(CandidatoRepository candidatoRepository, PasswordEncoder passwordEncoder,
+                     MsCompetenciaClient msCompetenciaClient) {
         this.candidatoRepository = candidatoRepository
         this.passwordEncoder = passwordEncoder
+        this.msCompetenciaClient = msCompetenciaClient
     }
 
     @Transactional
@@ -37,6 +42,22 @@ class CandidatoService {
         Candidato candidatoSalvo = candidatoRepository.save(candidato)
 
         return new CandidatoResponseDTO(candidatoSalvo)
+    }
+
+    @Transactional(readOnly = true)
+    List<CandidatoResponseDTO> listarCandidatos() {
+        List<Candidato> candidatos = candidatoRepository.findAll()
+
+        return candidatos.collect { candidato ->
+            List<CompetenciaDTO> competencias = new ArrayList<>()
+            try {
+                competencias = msCompetenciaClient.getCompetenciasCandidato(candidato.id)
+            } catch (Exception e) {
+                println "Erro ao buscar competências para candidato ${candidato.id}: ${e.message}"
+            }
+
+            return new CandidatoResponseDTO(candidato, competencias)
+        }
     }
 
 }

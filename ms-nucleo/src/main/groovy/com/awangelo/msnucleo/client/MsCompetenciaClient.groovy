@@ -14,4 +14,7 @@ interface MsCompetenciaClient {
     @GetMapping("/api/competencias/vagas/{vagaId}")
     List<CompetenciaDTO> getCompetenciasVaga(@PathVariable("vagaId") Long vagaId)
 
+    @GetMapping("/api/competencias/candidatos/{candidatoId}")
+    List<CompetenciaDTO> getCompetenciasCandidato(@PathVariable("candidatoId") Long candidatoId)
+
 }

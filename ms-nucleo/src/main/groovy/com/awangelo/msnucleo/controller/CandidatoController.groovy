@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -28,6 +29,12 @@ class CandidatoController {
         // @Valid roda o Bean Validation ANTES de entrar no metodo.
         CandidatoResponseDTO responseDTO = candidatoService.salvar(requestDTO)
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO)
+    }
+
+    @GetMapping
+    ResponseEntity<List<CandidatoResponseDTO>> listarCandidatos() {
+        List<CandidatoResponseDTO> candidatos = candidatoService.listarCandidatos()
+        return ResponseEntity.ok(candidatos)
     }
 
 }
