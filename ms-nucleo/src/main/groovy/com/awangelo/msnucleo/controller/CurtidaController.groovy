@@ -1,6 +1,8 @@
 package com.awangelo.msnucleo.controller
 
+import com.awangelo.msnucleo.dto.CandidatoResponseDTO
 import com.awangelo.msnucleo.dto.CurtidaRequestDTO
+import com.awangelo.msnucleo.dto.VagaResponseDTO
 import com.awangelo.msnucleo.service.CurtidaService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -26,6 +28,18 @@ class CurtidaController {
         } 
         
         return ResponseEntity.ok("Curtida registrada com sucesso!")
+    }
+
+    @GetMapping("/matches/candidatos/{candidatoId}")
+    ResponseEntity<List<VagaResponseDTO>> listarMatchesCandidato(@PathVariable Long candidatoId) {
+        List<VagaResponseDTO> matches = curtidaService.listarMatchesCandidato(candidatoId)
+        return ResponseEntity.ok(matches)
+    }
+
+    @GetMapping("/matches/vagas/{vagaId}")
+    ResponseEntity<List<CandidatoResponseDTO>> listarMatchesVaga(@PathVariable Long vagaId) {
+        List<CandidatoResponseDTO> matches = curtidaService.listarMatchesVaga(vagaId)
+        return ResponseEntity.ok(matches)
     }
 
 }

@@ -1,6 +1,10 @@
 package com.awangelo.msnucleo.service
 
+import com.awangelo.msnucleo.client.MsCompetenciaClient
+import com.awangelo.msnucleo.dto.CandidatoResponseDTO
+import com.awangelo.msnucleo.dto.CompetenciaDTO
 import com.awangelo.msnucleo.dto.CurtidaRequestDTO
+import com.awangelo.msnucleo.dto.VagaResponseDTO
 import com.awangelo.msnucleo.model.Candidato
 import com.awangelo.msnucleo.model.Curtida
 import com.awangelo.msnucleo.model.OrigemCurtidaEnum
@@ -17,13 +21,16 @@ class CurtidaService {
     private final CurtidaRepository curtidaRepository
     private final CandidatoRepository candidatoRepository
     private final VagaRepository vagaRepository
+    private final MsCompetenciaClient msCompetenciaClient
 
     CurtidaService(CurtidaRepository curtidaRepository,
                    CandidatoRepository candidatoRepository,
-                   VagaRepository vagaRepository) {
+                   VagaRepository vagaRepository,
+                   MsCompetenciaClient msCompetenciaClient) {
         this.curtidaRepository = curtidaRepository
         this.candidatoRepository = candidatoRepository
         this.vagaRepository = vagaRepository
+        this.msCompetenciaClient = msCompetenciaClient
     }
 
     @Transactional
@@ -57,5 +64,34 @@ class CurtidaService {
         return isMatch
     }
 
-}
+    @Transactional(readOnly = true)
+    List<VagaResponseDTO> listarMatchesCandidato(Long candidatoId) {
+        List<Vaga> vagas = curtidaRepository.findMatchesForCandidato(candidatoId)
 
+        return vagas.collect { vaga ->
+            List<CompetenciaDTO> competencias = []
+            try {
+                competencias = msCompetenciaClient.getCompetenciasVaga(vaga.id)
+            } catch (Exception e) {
+                // Ignore error fetching competencies
+            }
+            return new VagaResponseDTO(vaga, competencias)
+        }
+    }
+
+    @Transactional(readOnly = true)
+    List<CandidatoResponseDTO> listarMatchesVaga(Long vagaId) {
+        List<Candidato> candidatos = curtidaRepository.findMatchesForVaga(vagaId)
+
+        return candidatos.collect { candidato ->
+            List<CompetenciaDTO> competencias = []
+            try {
+                competencias = msCompetenciaClient.getCompetenciasCandidato(candidato.id)
+            } catch (Exception e) {
+                // Ignore error fetching competencies
+            }
+            return new CandidatoResponseDTO(candidato, competencias)
+        }
+    }
+
+}
