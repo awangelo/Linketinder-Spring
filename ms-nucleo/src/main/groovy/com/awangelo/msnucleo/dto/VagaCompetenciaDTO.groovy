@@ -3,6 +3,6 @@ package com.awangelo.msnucleo.dto
 class VagaCompetenciaDTO {
 
     Long vagaId
-    List<String> competencias
+    List<CompetenciaDTO> competencias
 
 }

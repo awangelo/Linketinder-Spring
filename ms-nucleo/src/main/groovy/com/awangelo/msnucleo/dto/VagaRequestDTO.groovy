@@ -17,6 +17,6 @@ class VagaRequestDTO {
     String localVaga
 
     @NotEmpty(message = "A lista de competências não pode ser vazia")
-    List<String> competencias
+    List<CompetenciaDTO> competencias
 
 }

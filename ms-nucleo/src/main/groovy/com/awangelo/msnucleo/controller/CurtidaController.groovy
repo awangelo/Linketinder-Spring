@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 
 @RestController
 @RequestMapping("/api/curtidas")
+@CrossOrigin(origins = "*")
 class CurtidaController {
 
     private final CurtidaService curtidaService
