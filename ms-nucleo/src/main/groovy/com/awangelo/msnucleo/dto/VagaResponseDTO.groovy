@@ -9,7 +9,6 @@ class VagaResponseDTO {
     String descricao
     String localVaga
     Long empresaId
-    String empresaNome
     List<CompetenciaDTO> competencias
 
     VagaResponseDTO(Vaga vaga, List<CompetenciaDTO> competencias) {
@@ -18,9 +17,7 @@ class VagaResponseDTO {
         this.descricao = vaga.descricao
         this.localVaga = vaga.localVaga
         this.empresaId = vaga.empresa.id
-        this.empresaNome = vaga.empresa.nome
         this.competencias = competencias
     }
 
 }
-
